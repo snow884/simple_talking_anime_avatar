@@ -10,7 +10,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "simple-talking_anime-avatar"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
   { name="Adam Ivansky", email="adam.ivansky@gmail.com" },
 ]
@@ -26,9 +26,10 @@ classifiers = [
 ]
 dependencies = [
   'opencv-python >= 4.0.0.21',
-  'numpy >= 2.0.0',
+  'numpy < 2.0.0, >=1.20.0 ',
   'whisper-timestamped >= 1.15.8',
-  'whisper >= 1.1.10'
+  'whisper >= 1.1.10',
+  'librosa >= 0.10.0'
 ]
 
 [project.urls]
