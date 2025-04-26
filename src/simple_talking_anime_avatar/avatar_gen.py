@@ -136,3 +136,4 @@ def get_image_speaking(letters:str="bb"):
         res_rgb = res
 
     return res_rgb
+# dummy commit 3
