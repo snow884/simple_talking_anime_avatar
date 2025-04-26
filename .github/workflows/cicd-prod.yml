@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: CICD prod
+name: CICD dev
 
 on:
   push:
@@ -29,18 +29,22 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-      - name: Deploy pip package
-        uses: actions/setup-python@v4 
+      - uses: actions/setup-python@v4 
         with:
           python-version: 'pypy3.10' 
-        env:
-          PIP_TEST_TOKEN: ${{secrets.PIP_TEST_TOKEN}}
-      - run: |
-          pip install --upgrade build
-          pip install twine
-          python -m build
-          python -m twine upload dist/* -u __token__ -p $PIP_TOKEN
 
-      - name: Deployed!
-        run: echo App successfully deployed 
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Deploy pip package
+      env:
+        PIP_TOKEN: ${{secrets.PIP_TOKEN}}
+      run: |
+        pip install --upgrade build
+        pip install twine
+        python -m build
+        python -m twine upload dist/* -u __token__ -p $PIP_TOKEN
+
+    - name: Deployed!
+      run: echo App successfully deployed 
 
