@@ -50,7 +50,7 @@ def overlay_transparent(background, overlay, x, y):
     return background
 
 
-def get_filename(letters:str="bb"):
+def get_filename(letters: str = "bb"):
     """_summary_
 
     Args:
@@ -106,7 +106,7 @@ def get_filename(letters:str="bb"):
         raise Exception(f"No match for {letters}")
 
 
-def get_image_speaking(letters:str="bb"):
+def get_image_speaking(letters: str = "bb"):
 
     mouth_filename = get_filename(letters=letters)
 
@@ -136,4 +136,6 @@ def get_image_speaking(letters:str="bb"):
         res_rgb = res
 
     return res_rgb
-# dummy commit 3
+
+
+# dummy commit 4
