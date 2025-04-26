@@ -33,18 +33,17 @@ jobs:
         with:
           python-version: 'pypy3.10' 
 
-    steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Deploy pip package
-      env:
-        PIP_TEST_TOKEN: ${{secrets.PIP_TEST_TOKEN}}
-      run: |
-        pip install --upgrade build
-        pip install twine
-        python -m build
-        python -m twine upload --repository testpypi dist/* -u __token__ -p $PIP_TEST_TOKEN
+      - name: Deploy pip package
+        env:
+          PIP_TEST_TOKEN: ${{secrets.PIP_TEST_TOKEN}}
+        run: |
+          pip install --upgrade build
+          pip install twine
+          python -m build
+          python -m twine upload --repository testpypi dist/* -u __token__ -p $PIP_TEST_TOKEN
 
-    - name: Deployed!
-      run: echo App successfully deployed 
+      - name: Deployed!
+        run: echo App successfully deployed 
 
