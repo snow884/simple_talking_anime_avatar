@@ -1,11 +1,24 @@
 import cv2
+import librosa
 import whisper_timestamped as whisper
 from whisper.tokenizer import get_tokenizer
 
 
-def get_speaker_video(
-    output_video_path, audio_file_name, length_audio, min_desired_length, fps
-):
+def get_audio_duration(file_path):
+    """
+    Retrieves the duration of an audio file in seconds.
+
+    Args:
+      file_path: Path to the audio file.
+
+    Returns:
+      The duration of the audio file in seconds.
+    """
+    duration = librosa.get_duration(path=file_path)
+    return duration
+
+
+def get_speaker_video(output_video_path, audio_file_name, fps):
     """_summary_
 
     Args:
@@ -26,6 +39,7 @@ def get_speaker_video(
             and len(tokenizer.decode([i]).strip()) > 0
         )
     ]
+    audio_duration = get_audio_duration(audio_file_name)
     audio = whisper.load_audio(audio_file_name)
     model = whisper.load_model(
         "tiny"
@@ -33,7 +47,6 @@ def get_speaker_video(
     data = whisper.transcribe(
         model, audio, language="en", suppress_tokens=[-1] + number_tokens
     )
-    print(data)
 
     from avatar_gen import get_image_speaking
 
@@ -50,7 +63,7 @@ def get_speaker_video(
 
     pronunce_letter = " "
 
-    for i_frame in range(0, max(length_audio, min_desired_length)):
+    for i_frame in range(0, (fps * audio_duration)):
 
         timestamp = i_frame / fps
 
