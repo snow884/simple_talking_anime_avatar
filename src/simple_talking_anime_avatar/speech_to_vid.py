@@ -1,7 +1,10 @@
 import cv2
 import librosa
 import whisper_timestamped as whisper
+from moviepy import AudioFileClip, CompositeAudioClip, VideoFileClip
 from whisper.tokenizer import get_tokenizer
+
+from .avatar_gen import get_image_speaking
 
 
 def get_audio_duration(file_path):
@@ -18,7 +21,9 @@ def get_audio_duration(file_path):
     return duration
 
 
-def get_speaker_video(output_video_path, audio_file_name, fps):
+def get_speaker_video(
+    output_video_path, audio_file_name, fps=30, add_audio_to_video=True
+):
     """_summary_
 
     Args:
@@ -48,8 +53,6 @@ def get_speaker_video(output_video_path, audio_file_name, fps):
         model, audio, language="en", suppress_tokens=[-1] + number_tokens
     )
 
-    from avatar_gen import get_image_speaking
-
     # frame_height, frame_width, channels = cv_img.shape
 
     word_i = 0
@@ -58,21 +61,24 @@ def get_speaker_video(output_video_path, audio_file_name, fps):
     img = get_image_speaking()
     height, width, layers = img.shape
 
+    if add_audio_to_video:
+        ext_str = "_temp." + output_video_path.split(".")[-1]
+        output_video_path_temp = ".".join(output_video_path.split(".")[:-1]) + ext_str
+    else:
+        output_video_path_temp = output_video_path
+
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")  # Codec for .mp4
-    vid_out = cv2.VideoWriter(output_video_path, fourcc, fps, (height, width))
+    vid_out = cv2.VideoWriter(output_video_path_temp, fourcc, fps, (height, width))
 
     pronunce_letter = " "
 
-    for i_frame in range(0, (fps * audio_duration)):
+    for i_frame in range(0, int(fps * audio_duration) + 1):
 
         timestamp = i_frame / fps
 
         word_text = data["segments"][segment_id]["words"][word_i]["text"]
         word_start = data["segments"][segment_id]["words"][word_i]["start"]
         word_end = data["segments"][segment_id]["words"][word_i]["end"]
-
-        # print(word_start)
-        # print(word_end)
 
         if word_end <= timestamp:
             if word_i < len(data["segments"][segment_id]["words"]) - 1:
@@ -107,5 +113,16 @@ def get_speaker_video(output_video_path, audio_file_name, fps):
 
     vid_out.release()
 
+    merge_video_audio(output_video_path_temp, audio_file_name, output_video_path)
 
-# dummy commit 5
+
+def merge_video_audio(video_path, audio_path, output_path):
+
+    video_clip = VideoFileClip(video_path)
+    audio_clip = AudioFileClip(audio_path)
+
+    final_audio = CompositeAudioClip([audio_clip])
+
+    final_clip = video_clip.with_audio(final_audio)
+
+    final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")

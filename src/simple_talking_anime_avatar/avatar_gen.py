@@ -1,3 +1,5 @@
+import pathlib
+
 import cv2
 import numpy as np
 
@@ -108,13 +110,17 @@ def get_filename(letters: str = "bb"):
 
 def get_image_speaking(letters: str = "bb"):
 
+    curr_dir_path = pathlib.Path(__file__).parent.resolve()
+
     mouth_filename = get_filename(letters=letters)
 
     background = cv2.imread(
-        "../character_images/female1/main_image.png", cv2.IMREAD_UNCHANGED
+        curr_dir_path / pathlib.Path("character_images/female1/main_image.png"),
+        cv2.IMREAD_UNCHANGED,
     )
     overlay = cv2.imread(
-        f"../character_images/female1/{mouth_filename}", cv2.IMREAD_UNCHANGED
+        curr_dir_path / pathlib.Path(f"character_images/female1/{mouth_filename}"),
+        cv2.IMREAD_UNCHANGED,
     )
     overlay = cv2.resize(overlay, (140, 140))
 
