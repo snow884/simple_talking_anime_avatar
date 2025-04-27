@@ -1,7 +1,7 @@
 # simple_talking_anime_avatar
 Simple python package to generate talking anime avatar video.
 
-![Talking avatar example](speaking_avatar_example.gif "Speaking avatar gif")
+![Talking avatar example](https://github.com/snow884/simple_talking_anime_avatar/raw/master/speaking_avatar_example.gif "Speaking avatar gif")
 
 ## Installation
 
@@ -23,7 +23,7 @@ cv2.imwrite("speaking_avatar_u.png", image_avatar_speaking_u)
 
 This will generate an image looking something like this:
 
-![Pronuncing u](speaking_avatar_u.png "Pronuncing u")
+![Pronuncing u](https://github.com/snow884/simple_talking_anime_avatar/raw/master/speaking_avatar_u.png "Pronuncing u")
 
 Here is how to generate the video at the top using the library pyttsx3. Note that pyttsx3 works differently on different systems. There is also other packages for generating speech from text.
 ```

@@ -10,12 +10,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "simple-talking_anime-avatar"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
   { name="Adam Ivansky", email="adam.ivansky@gmail.com" },
 ]
 description = """
-Generate 
+A simple python package to generate image or video of a talking avatar based on text or audio.
 """
 readme = "README.md"
 requires-python = ">=3.10"
